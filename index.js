@@ -1,9 +1,11 @@
 // Require modules
 const inquirer = require("inquirer");
-const Intern = require("./lib/Intern");
 
 // Require objects
 const Manager = require("./lib/Manager");
+const Intern = require("./lib/Intern");
+const Engineer = require("./lib/Engineer");
+const makePage = require("./lib/makepage");
 
 const teamData = [];
 
@@ -77,7 +79,10 @@ const createEmployee = () => {
                     type: "list",
                     message: "Choose the employee role",
                     name: "role",
-                    choices: ["Engineer", "Intern"]
+                    choices: ["Engineer", "Intern", {
+                        name: "Done",
+                        value: false
+                    }]
                 },
                 {
                     type: "input",
@@ -113,12 +118,17 @@ const createEmployee = () => {
                         case "Intern":
                             const intern = new Intern(answers.name, answers.id, answers.email, answers.school)
                             teamData.push(intern);
+
                             break;
                         case "Engineer":
                             const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github)
                             teamData.push(engineer);
+
                             break;
                     }
+                    return createEmployee().then(() => resolve());
+                } else {
+                    return resolve();
                 }
             })
     })
@@ -126,4 +136,6 @@ const createEmployee = () => {
 
 createManager().then(() => {
     return createEmployee();
+}).then(() => {
+    return makePage(teamData);
 })
