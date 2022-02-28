@@ -1,6 +1,6 @@
 const Engineer = require("../lib/Engineer");
 
-it("fetches the GitHub from the constructor", () => {
+it("fetches the employees GitHub username from the constructor", () => {
     const employee = new Engineer("David", "001", "david@company.com", "gitUsername");
-    expect(employee.github).toBe("gitUsername");
+    expect(employee.githubUsername).toBe("gitUsername");
 })
