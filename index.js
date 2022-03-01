@@ -1,5 +1,6 @@
 // Require modules
 const inquirer = require("inquirer");
+const fs = require("fs");
 
 // Require objects
 const Manager = require("./lib/Manager");
@@ -134,8 +135,13 @@ const createEmployee = () => {
     })
 }
 
+const createHtml = (html) => {
+    fs.writeFile("./dist/")
+}
+
 createManager().then(() => {
     return createEmployee();
 }).then(() => {
-    return makePage(teamData);
-})
+    const htmlData = makePage(teamData)
+    createH(teamData);
+}).then((console.log(makePage)));
