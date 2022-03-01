@@ -10,138 +10,86 @@ const makePage = require("./lib/makepage");
 
 const teamData = [];
 
-const createManager = () => {
-    console.clear();
-    console.log(`
+function app() {
+
+    function createTeam() {
+        console.clear();
+        console.log(`
+        
+    ╭━━━━╮╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╭━╮╭╮╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮
+    ┃╭╮╭╮┃╱╱╱╱╱╱╱╱┃╭━╮┃╱╱╱╱╱┃╭╯┃┃╱╱╱╱┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱╭╯╰╮
+    ╰╯┃┃┣┻━┳━━┳╮╭╮┃╰━╯┣━┳━━┳╯╰┳┫┃╭━━╮┃┃╱╰╋━━┳━╮╭━━┳━┳━┻╮╭╋━━┳━╮
+    ╱╱┃┃┃┃━┫╭╮┃╰╯┃┃╭━━┫╭┫╭╮┣╮╭╋┫┃┃┃━┫┃┃╭━┫┃━┫╭╮┫┃━┫╭┫╭╮┃┃┃╭╮┃╭╯
+    ╱╱┃┃┃┃━┫╭╮┃┃┃┃┃┃╱╱┃┃┃╰╯┃┃┃┃┃╰┫┃━┫┃╰┻━┃┃━┫┃┃┃┃━┫┃┃╭╮┃╰┫╰╯┃┃
+    ╱╱╰╯╰━━┻╯╰┻┻┻╯╰╯╱╱╰╯╰━━╯╰╯╰┻━┻━━╯╰━━━┻━━┻╯╰┻━━┻╯╰╯╰┻━┻━━┻╯
     
-╭━━━━╮╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╭━╮╭╮╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮
-┃╭╮╭╮┃╱╱╱╱╱╱╱╱┃╭━╮┃╱╱╱╱╱┃╭╯┃┃╱╱╱╱┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱╭╯╰╮
-╰╯┃┃┣┻━┳━━┳╮╭╮┃╰━╯┣━┳━━┳╯╰┳┫┃╭━━╮┃┃╱╰╋━━┳━╮╭━━┳━┳━┻╮╭╋━━┳━╮
-╱╱┃┃┃┃━┫╭╮┃╰╯┃┃╭━━┫╭┫╭╮┣╮╭╋┫┃┃┃━┫┃┃╭━┫┃━┫╭╮┫┃━┫╭┫╭╮┃┃┃╭╮┃╭╯
-╱╱┃┃┃┃━┫╭╮┃┃┃┃┃┃╱╱┃┃┃╰╯┃┃┃┃┃╰┫┃━┫┃╰┻━┃┃━┫┃┃┃┃━┫┃┃╭╮┃╰┫╰╯┃┃
-╱╱╰╯╰━━┻╯╰┻┻┻╯╰╯╱╱╰╯╰━━╯╰╯╰┻━┻━━╯╰━━━┻━━┻╯╰┻━━┻╯╰╯╰┻━┻━━┻╯
-
-  == 𝗦𝗧𝗘𝗣 𝟭 ===================
-   ＣＲＥＡＴＥ ＭＡＮＡＧＥＲ
-  =============================
-`)
-    return new Promise((resolve, reject) => {
-        inquirer
-            .prompt([
-                {
-                    type: "input",
-                    message: "Enter the managers name",
-                    name: "name"
-                },
-                {
-                    type: "input",
-                    message: "Enter the managers ID",
-                    name: "id"
-                },
-                {
-                    type: "input",
-                    message: "Enter the managers email",
-                    name: "email"
-                },
-                {
-                    type: "input",
-                    message: "Enter the managers office number",
-                    name: "officeNumber"
-                },
-            ])
-            .then(answers => {
-                const manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
-                teamData.push(manager);
-                resolve();
-            })
-    })
-}
-
-const createEmployee = () => {
-    console.clear();
-    console.log(`
     
-╭━━━━╮╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╭━╮╭╮╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮
-┃╭╮╭╮┃╱╱╱╱╱╱╱╱┃╭━╮┃╱╱╱╱╱┃╭╯┃┃╱╱╱╱┃╭━╮┃╱╱╱╱╱╱╱╱╱╱╱╱╭╯╰╮
-╰╯┃┃┣┻━┳━━┳╮╭╮┃╰━╯┣━┳━━┳╯╰┳┫┃╭━━╮┃┃╱╰╋━━┳━╮╭━━┳━┳━┻╮╭╋━━┳━╮
-╱╱┃┃┃┃━┫╭╮┃╰╯┃┃╭━━┫╭┫╭╮┣╮╭╋┫┃┃┃━┫┃┃╭━┫┃━┫╭╮┫┃━┫╭┫╭╮┃┃┃╭╮┃╭╯
-╱╱┃┃┃┃━┫╭╮┃┃┃┃┃┃╱╱┃┃┃╰╯┃┃┃┃┃╰┫┃━┫┃╰┻━┃┃━┫┃┃┃┃━┫┃┃╭╮┃╰┫╰╯┃┃
-╱╱╰╯╰━━┻╯╰┻┻┻╯╰╯╱╱╰╯╰━━╯╰╯╰┻━┻━━╯╰━━━┻━━┻╯╰┻━━┻╯╰╯╰┻━┻━━┻╯
-
-  == 𝗦𝗧𝗘𝗣 𝟭 ⎷ ==================
-  == 𝗦𝗧𝗘𝗣 𝟮 ====================
-   ＣＲＥＡＴＥ ＥＭＰＬＯＹＥＥ
-  ==============================
-`)
-    return new Promise((resolve, reject) => {
+    `)
         inquirer
-            .prompt([
-                {
-                    type: "list",
-                    message: "Choose the employee role",
-                    name: "role",
-                    choices: ["Engineer", "Intern", {
-                        name: "Done",
-                        value: false
-                    }]
-                },
-                {
-                    type: "input",
-                    message: "Enter the employees name",
-                    name: "name"
-                },
-                {
-                    type: "input",
-                    message: "Enter the employees ID",
-                    name: "id"
-                },
-                {
-                    type: "input",
-                    message: "Enter the employees email",
-                    name: "email"
-                },
-                {
-                    type: "input",
-                    message: "Enter the employees school",
-                    name: "school",
-                    when: ({ role }) => role === "Intern"
-                },
-                {
-                    type: "input",
-                    message: "Enter the employees GitHub username",
-                    name: "github",
-                    when: ({ role }) => role === "Engineer"
-                },
-            ])
-            .then(answers => {
-                if (answers.role) {
-                    switch (answers.role) {
-                        case "Intern":
-                            const intern = new Intern(answers.name, answers.id, answers.email, answers.school)
-                            teamData.push(intern);
-
-                            break;
-                        case "Engineer":
-                            const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github)
-                            teamData.push(engineer);
-
-                            break;
-                    }
-                    return createEmployee().then(() => resolve());
-                } else {
-                    return resolve();
+            .prompt([{
+                type: "list",
+                message: "What type of employee would you like to create?",
+                name: "createEmployee",
+                choices: ["Manager", "Engineer", "Intern", "No more employees"]
+            }]).then(function (choice) {
+                switch (choice.createEmployee) {
+                    case "Manager":
+                        createManager();
+                        break;
+                    case "Engineer":
+                        createEngineer();
+                        break;
+                    case "Intern":
+                        createIntern();
+                        break;
+                    default:
+                        makePage();
                 }
             })
-    })
+    }
+
+    function createManager() {
+        inquirer
+            .prompt([
+                {
+                    type: "input",
+                    name: "managerName",
+                    message: "Enter managers name"
+                },
+                {
+                    type: "input",
+                    name: "managerId",
+                    message: "Enter managers ID",
+                },
+                {
+                    type: "input",
+                    name: "managerEmail",
+                    message: "Enter managers email"
+                },
+                {
+                    type: "input",
+                    name: "officeNumber",
+                    message: "Enter office number"
+                }
+            ]).then(answers => {
+                const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.officeNumber);
+                teamData.push(manager);
+                console.log(teamData);
+            });
+    }
+
+
+    createTeam();
+
 }
 
-const createHtml = (html) => {
-    fs.writeFile("./dist/")
-}
-
-createManager().then(() => {
-    return createEmployee();
-}).then(() => {
-    const htmlData = makePage(teamData)
-    createH(teamData);
-}).then((console.log(makePage)));
+// const createHtml = (html) => {
+//     fs.writeFile("./dist/index.html", html, (err) => {
+//         if(err) throw err;
+//     });
+// }
+app();
+// .then(() => {
+//     const htmlData = makePage(teamData)
+//     createHtml(htmlData);
+// })
